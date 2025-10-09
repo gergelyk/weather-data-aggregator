@@ -1,4 +1,4 @@
-# Weather Data Aggregator
+# Weather Data Provider
 
 Agregates data from meteo stations.
 
