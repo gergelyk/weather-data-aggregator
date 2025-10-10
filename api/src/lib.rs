@@ -2,8 +2,12 @@ mod collectors;
 mod measurements;
 
 use crate::measurements::Measurements;
-use collectors::{Downloader, AemetDownloader, MeteocatDownloader, MeteoclimaticDownloader, WeatherlinkDownloader, OpenWindMapDownloader};
+use collectors::{
+    AemetDownloader, Downloader, MeteocatDownloader, MeteoclimaticDownloader,
+    OpenWindMapDownloader, WeatherlinkDownloader,
+};
 use futures::stream::{self, StreamExt};
+use http::StatusCode;
 use measurements::get_units;
 use serde_json::json;
 use spin_sdk::http::{IntoResponse, Request, Response};
@@ -59,11 +63,17 @@ fn check_token(req: &Request) -> anyhow::Result<Option<Response>> {
     if let Some(token) = query.get("token") {
         if token != &expected_token {
             log::error!("Invalid token: {}", token);
-            return Ok(Some(plain_text_resp(400, "Invalid token")));
+            return Ok(Some(plain_text_resp(
+                StatusCode::UNAUTHORIZED.into(),
+                "Invalid token",
+            )));
         }
     } else {
         log::error!("Missing token");
-        return Ok(Some(plain_text_resp(400, "Missing token")));
+        return Ok(Some(plain_text_resp(
+            StatusCode::UNAUTHORIZED.into(),
+            "Missing token",
+        )));
     }
 
     Ok(None)
@@ -118,7 +128,10 @@ async fn handle_post(req: &Request) -> anyhow::Result<Response> {
             urls.len(),
             MAX_NUMBER_OF_MEASUREMENTS
         );
-        return Ok(plain_text_resp(400, "Too many measurements requested at once"));
+        return Ok(plain_text_resp(
+            StatusCode::BAD_REQUEST.into(),
+            "Too many measurements requested at once",
+        ));
     }
 
     let measurements = stream::iter(urls)
@@ -133,7 +146,7 @@ async fn handle_post(req: &Request) -> anyhow::Result<Response> {
     });
 
     Ok(Response::builder()
-        .status(200)
+        .status(StatusCode::OK)
         .header("content-type", "application/json")
         .body(data.to_string())
         .build())
@@ -149,11 +162,14 @@ async fn handle_weather_data_provider(req: Request) -> anyhow::Result<impl IntoR
             let app_name = env!("CARGO_PKG_NAME");
             let app_version = env!("CARGO_PKG_VERSION");
             Ok(plain_text_resp(
-                200,
+                StatusCode::OK.into(),
                 &format!("Hello from {app_name} v{app_version}"),
             ))
         }
         spin_sdk::http::Method::Post => handle_post(&req).await,
-        _ => Ok(plain_text_resp(405, "Method not allowed")),
+        _ => {
+            let status = StatusCode::METHOD_NOT_ALLOWED;
+            Ok(plain_text_resp(status.into(), status.as_str()))
+        }
     }
 }

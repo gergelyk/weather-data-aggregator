@@ -1,6 +1,6 @@
+use crate::collectors::common::wind_direction_name;
 use crate::collectors::Downloader;
 use crate::measurements::Measurements;
-use crate::collectors::common::wind_direction_name;
 use anyhow::{anyhow, Context};
 use chrono::NaiveDateTime;
 use scraper::{Html, Selector};

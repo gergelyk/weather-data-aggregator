@@ -1,10 +1,10 @@
+use crate::collectors::common::wind_direction_name;
+use crate::collectors::Downloader;
 use crate::measurements::Measurements;
 use anyhow::anyhow;
 use chrono::DateTime;
-use spin_sdk::http::{Method, Request, Response};
 use serde::Deserialize;
-use crate::collectors::common::wind_direction_name;
-use crate::collectors::Downloader;
+use spin_sdk::http::{Method, Request, Response};
 
 pub const BASE_URL: &str = "https://www.weatherlink.com/";
 
@@ -33,12 +33,13 @@ impl Downloader for WeatherlinkDownloader {
     }
 
     async fn try_download(&self, url: &str) -> anyhow::Result<Measurements> {
-
         let prefix = format!("{}embeddablePage/show/", BASE_URL);
-        let path = url.strip_prefix(&prefix)
+        let path = url
+            .strip_prefix(&prefix)
             .ok_or_else(|| anyhow!("Invalid URL: {}", url))?;
 
-        let vendor_id = path.split('/')
+        let vendor_id = path
+            .split('/')
             .next()
             .ok_or_else(|| anyhow!("Unexpected path: {}", path))?;
 
@@ -54,7 +55,10 @@ impl Downloader for WeatherlinkDownloader {
         let measurement_raw: MeasurementsRaw = serde_json::from_str(&body)?;
 
         if !["mb", "hPa"].contains(&measurement_raw.barometerUnits.as_str()) {
-            anyhow::bail!("Unsupported barometer units: {}", measurement_raw.barometerUnits);
+            anyhow::bail!(
+                "Unsupported barometer units: {}",
+                measurement_raw.barometerUnits
+            );
         }
         if measurement_raw.windUnits != "km/h" {
             anyhow::bail!("Unsupported wind units: {}", measurement_raw.windUnits);
@@ -63,7 +67,10 @@ impl Downloader for WeatherlinkDownloader {
             anyhow::bail!("Unsupported rain units: {}", measurement_raw.rainUnits);
         }
         if measurement_raw.tempUnits != "&deg;C" {
-            anyhow::bail!("Unsupported temperature units: {}", measurement_raw.tempUnits);
+            anyhow::bail!(
+                "Unsupported temperature units: {}",
+                measurement_raw.tempUnits
+            );
         }
         let update_time = DateTime::from_timestamp(
             measurement_raw.lastReceived as i64 / 1000,
@@ -76,7 +83,9 @@ impl Downloader for WeatherlinkDownloader {
             precipitation: Some(measurement_raw.rain.parse()?),
             pressure: Some(measurement_raw.barometer.parse::<f64>()?.round() as u64), // 1 mb = 1 hPa
             temperature: Some(measurement_raw.temperature.parse()?),
-            wind_direction: Some(wind_direction_name(measurement_raw.windDirection as f64).to_owned()),
+            wind_direction: Some(
+                wind_direction_name(measurement_raw.windDirection as f64).to_owned(),
+            ),
             wind_speed: Some(measurement_raw.wind.parse()?),
             gusts_speed: Some(measurement_raw.gust.parse()?),
         };

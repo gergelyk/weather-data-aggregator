@@ -1248,6 +1248,7 @@ dependencies = [
  "chrono-tz",
  "encoding_rs",
  "futures",
+ "http",
  "log",
  "querystring",
  "regex",

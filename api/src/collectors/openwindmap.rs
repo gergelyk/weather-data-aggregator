@@ -1,10 +1,10 @@
+use crate::collectors::common::wind_direction_name;
+use crate::collectors::Downloader;
 use crate::measurements::Measurements;
 use anyhow::anyhow;
 use chrono::{DateTime, Utc};
-use spin_sdk::http::{Method, Request, Response};
 use serde::Deserialize;
-use crate::collectors::common::wind_direction_name;
-use crate::collectors::Downloader;
+use spin_sdk::http::{Method, Request, Response};
 
 const API_URL: &str = "http://api.pioupiou.fr/v1/live/";
 pub const BASE_URL: &str = "https://www.openwindmap.org/";
@@ -35,11 +35,12 @@ impl Downloader for OpenWindMapDownloader {
     }
 
     async fn try_download(&self, url: &str) -> anyhow::Result<Measurements> {
-
-        let path = url.strip_prefix(&BASE_URL)
+        let path = url
+            .strip_prefix(&BASE_URL)
             .ok_or_else(|| anyhow!("Invalid URL: {}", url))?;
 
-        let vendor_id = path.split('-')
+        let vendor_id = path
+            .split('-')
             .nth(1)
             .ok_or_else(|| anyhow!("Unexpected path: {}", path))?;
 
@@ -62,7 +63,9 @@ impl Downloader for OpenWindMapDownloader {
             precipitation: None,
             pressure: None,
             temperature: None,
-            wind_direction: Some(wind_direction_name(measurement_raw.data.measurements.wind_heading).to_owned()),
+            wind_direction: Some(
+                wind_direction_name(measurement_raw.data.measurements.wind_heading).to_owned(),
+            ),
             wind_speed: Some(measurement_raw.data.measurements.wind_speed_avg.round() as u64),
             gusts_speed: Some(measurement_raw.data.measurements.wind_speed_max.round() as u64),
         };

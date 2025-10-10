@@ -12,6 +12,14 @@ Supported providers:
 - https://www.openwindmap.org
 
 
+## Setup
+
+1. Install spin framework as described on the [webpage](https://spinframework.dev/)
+2. Make sure that wasm32 target is added to the toolchain used for UI compilation
+  cd ui
+  rustup show # check which toolchain is active
+  rustup +1.86.0 target add wasm32-unknown-unknown # for the active toolchain (1.86.0)
+
 ## Development
 
 ```sh
@@ -40,3 +48,5 @@ curl -X POST -d @api/examples/mixed.json 'https://weather.fermyon.app/api/v1?tok
 
 Notes:
 - Temporarily change name of the application in `spin.toml` if you would like to test before deploying to production.
+
+
