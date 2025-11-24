@@ -6,12 +6,12 @@ Agregates data from meteo stations. Full stack app. Provides web UI and public A
 
 Application is available at: https://weather.krason.dev/
 
-Features:
+### Features:
 - Configuration stored in the cookies.
 - Customizable rows and columns.
 - Integration with [lesma](https://lesma.eu/), for editing/sharing configuration.
 
-Supported providers:
+### Supported providers:
 - https://www.aemet.es
 - https://www.meteo.cat
 - https://www.meteoclimatic.net
