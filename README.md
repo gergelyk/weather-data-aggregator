@@ -2,6 +2,8 @@
 
 Agregates data from meteo stations.
 
+![](docs/screenshot.png)
+
 Application is available at: https://weather.krason.dev/
 
 Supported providers:
