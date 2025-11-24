@@ -11,7 +11,7 @@ Application is available at: https://weather.krason.dev/
 - Customizable rows and columns.
 - Integration with [lesma](https://lesma.eu/), for editing/sharing configuration.
 
-**Supported Providers:**
+**Supported providers:**
 - https://www.aemet.es
 - https://www.meteo.cat
 - https://www.meteoclimatic.net
