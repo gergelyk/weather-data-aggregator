@@ -1,10 +1,13 @@
 # Weather Data Aggregator
 
-Agregates data from meteo stations.
+Agregates data from meteo stations. Full stack app. Provides web UI and public API.
 
 ![](docs/screenshot.png)
 
 Application is available at: https://weather.krason.dev/
+
+- Application stores its configuration in the cookies.
+- Configuration can be edited/shared through [lesma](https://lesma.eu/).
 
 Supported providers:
 - https://www.aemet.es
@@ -12,7 +15,6 @@ Supported providers:
 - https://www.meteoclimatic.net
 - https://www.weatherlink.com
 - https://www.openwindmap.org
-
 
 ## Setup
 
