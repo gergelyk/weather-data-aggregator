@@ -18,11 +18,13 @@ Supported providers:
 
 1. Install spin framework as described on the [webpage](https://spinframework.dev/)
 2. Make sure that wasm32 targets are added to the toolchain
+  ```sh
   cd ui
   rustup show # check which toolchain is active
   # for the active toolchain (1.86.0):
   rustup +1.86.0 target add wasm32-unknown-unknown // used for frontend compilation
   rustup +1.86.0 target add wasm32-wasip1          // used for backend compilation
+  ```
 
 ## Development
 
