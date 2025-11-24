@@ -6,8 +6,10 @@ Agregates data from meteo stations. Full stack app. Provides web UI and public A
 
 Application is available at: https://weather.krason.dev/
 
-- Application stores its configuration in the cookies.
-- Configuration can be edited/shared through [lesma](https://lesma.eu/).
+Features:
+- Configuration stored in the cookies.
+- Customizable rows and columns.
+- Integration with [lesma](https://lesma.eu/), for editing/sharing configuration.
 
 Supported providers:
 - https://www.aemet.es
