@@ -6,6 +6,8 @@ Agregates data from meteo stations. Full stack app. Provides web UI and public A
 
 Application is available at: https://weather.krason.dev/
 
+This project is part of a bigger one: [retro-clock](https://github.com/gergelyk/retro-clock)
+
 **Features:**
 - Configuration stored in the cookies.
 - Customizable rows and columns.
