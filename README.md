@@ -2,7 +2,7 @@
 
 Agregates data from meteo stations. Full stack app. Provides web UI and public API.
 
-This project is part of a bigger one: [retro-clock](https://github.com/gergelyk/retro-clock)
+API is source of the data for this IoT project: [retro-clock](https://github.com/gergelyk/retro-clock)
 
 ![](docs/screenshot.png)
 
